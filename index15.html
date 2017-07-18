@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title></title>
+	<link rel="stylesheet" href="">
+	<script src="jquery-1.11.3.js"></script>
+	<style type="text/css" media="screen">
+		*{
+			margin:0;
+			padding:0;
+			list-style: none;
+		}
+
+		.banner{
+			position: relative;
+			width:600px;
+			height:260px;	
+			margin:50px auto;
+			overflow: hidden;		
+		}
+		.imgbox{
+			position: absolute;
+			left:0;
+			top:0;
+			width: 3000px;
+		}
+		.imgbox li{
+			width:600px;
+			height: 260px;
+			float:left;
+		}
+		.btnL,.btnR{
+			position: absolute;
+			width:30px;
+			height: 60px;
+			line-height: 60px;
+			text-align: center;
+			font-size: 30px;
+			color:#fff;
+			background: rgba(0,0,0,0.4);
+		}
+		.btnL{
+			left:0;
+			top:50%;
+			margin-top: -30px
+		}
+
+		.btnR{
+			right:0;
+			top:50%;
+			margin-top: -30px
+		}
+		.num{
+			position: absolute;
+			bottom:10px;
+			left:50%;
+			width:100%;
+		}
+		.num li{
+			float:left;
+			width:20px;
+			height: 20px;
+			border-radius: 50%;
+			background: #888;
+			margin-left:3px;
+		}
+
+		.num  li.on{
+			background: orange
+		}
+	</style> 
+	<script>
+		$(function(){
+			var i= 0;
+			var length = $('.imgbox li').length;
+			// console.log(length)  //4
+			for(var j=0;j<length;j++){
+				$('.num').append('<li></li>')   //创建li
+			}
+			$('.num li').first().addClass('on')
+			//左按钮
+			$('.btnL').click(function(){
+				moveL()
+			})
+
+		//构造一个函数  因为这段代码复用率高
+			function moveL(){
+				i++
+				if(i==length){
+					i=0
+				}
+				$('.imgbox').stop().animate({left:-i*600+'px'})
+				$('.num li').eq(i).addClass('on').siblings().removeClass('on')
+			}
+
+			//右按钮
+			$('.btnR').click(function(){
+				i--
+				if(i==-1){
+					i=length-1
+				}
+				$('.imgbox').stop().animate({left:-i*600+'px'},500)
+				$('.num li').eq(i).addClass('on').siblings().removeClass('on')
+			})
+
+
+			//鼠标滑入
+			$('.num li').hover(function(){
+					var index=$(this).index();
+					i=index;
+					$('.imgbox').stop().animate({left:-index*600+'px'},500)
+					$(this).addClass('on').siblings().removeClass('on')
+				})
+
+			//定时器
+			var time = setInterval( moveL,1000)
+
+			//鼠标滑入时停止定时器，滑出时开启
+			$('.imgbox').hover(function(){
+				clearInterval(time)
+			},function(){
+				time = setInterval( moveL,1000)
+			})
+
+		})
+	</script>
+</head>
+<body>
+	<div class="banner">
+		<ul class="imgbox">
+			<li><a href="#"><img src="images/1.jpg" alt=""></a></li>
+			<li><a href="#"><img src="images/2.jpg" alt=""></a></li>
+			<li><a href="#"><img src="images/3.jpg" alt=""></a></li>
+			<li><a href="#"><img src="images/4.jpg" alt=""></a></li>
+		</ul>
+
+		<div class="btnL">&lt;</div>
+		<div class="btnR">&gt;</div>
+		<ul class="num">
+			<!-- <li></li>
+			<li></li>
+			<li></li>
+			<li></li> -->
+		</ul>
+	</div>
+</body>
+</html>
