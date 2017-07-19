@@ -112,6 +112,8 @@
 					i=index;
 					$('.imgbox').stop().animate({left:-index*600+'px'},500)
 					$(this).addClass('on').siblings().removeClass('on')
+				},function(){
+					clearInterval(time)    //清理定时器
 				})
 
 			//定时器
