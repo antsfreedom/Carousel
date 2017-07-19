@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>无缝滚动轮播</title>
+	<link rel="stylesheet" href="">
+	<script src='jquery-1.11.3.js'></script>
+	<style type="text/css" media="screen">
+		*{
+			margin:0;
+			padding: 0;
+		}
+		ul li{
+			list-style: none;
+		}
+		.banner{
+			position: relative;
+			width: 600px;
+			height:260px;
+			overflow: hidden;
+			margin:50px auto
+		}
+	
+		.imgbox{
+			position: absolute;
+			width:2500px;
+			height: 260px;
+			top:0;
+		}
+		.imgbox li{
+			width:600px;
+			height:260px;
+			float:left;
+		}
+		.Larrow,.Rarrow{
+			width:30px;
+			height:50px;
+			text-align: center;
+			line-height: 50px;
+			color:#fff;
+			background: rgba(0,0,0,0.4);
+		}
+		.Larrow{
+			position: absolute;
+			left:0;
+			top:50%;
+			margin-top: -25px
+		}
+		.Rarrow{
+			position: absolute;
+			right:0;
+			top:50%;
+			margin-top: -25px
+		}
+		.btns{
+			position: absolute;
+			width:100%;
+			left:0;
+			bottom:10px;
+			margin-left:250px;
+			text-align: center;
+		}
+		.btns li{
+			width: 20px;
+			height:20px;   
+			border-radius: 50%;
+			background: #000;
+			color:#fff;
+			cursor: pointer;
+			float:left;
+			margin-left: 3px;
+		}
+		.btns li.active{
+			background: orange
+		}
+	</style>
+	<script>
+		$(function(){
+			var i=0;
+			var time;
+			var clone = $('.imgbox li').first().clone();     //克隆第一张图片
+			$('.imgbox').append(clone);
+			var size = $('.imgbox li').size();
+			// console.log(size)   //输出值：5
+			for(var j=0;j<size-1;j++){
+				$('.btns').append('<li></li>')    //创建底部按钮li标签
+			}
+
+			$('.btns li').first().addClass('active');   //给第一按钮加样式
+
+		//左按钮
+			$('.Larrow').click(function(){
+				moveL()
+			})
+
+			//左移函数
+			function moveL(){
+				i++
+				if(i==size){
+					// i=0;    
+					$('.imgbox').css({left:0});    //无缝滚动-当i=5时，那么imgbox移到第一位，但是此时i索引已经变了
+					i=1;    
+				}
+					$('.imgbox').stop().animate({left:-i*600})
+					if(i==size-1){
+						$('.btns li').eq(0).addClass('active').siblings().removeClass('active')
+					}else{
+						$('.btns li').eq(i).addClass('active').siblings().removeClass('active')
+			}
+		}
+
+		//右按钮
+			$('.Rarrow').click(function(){
+				moveR()
+			})
+
+			function moveR(){
+				i--
+				if(i==-1){
+					$('.imgbox').css({left:-(size-1)*600})
+					i= size-2
+				}
+					$('.imgbox').stop().animate({left:-i*600})
+					$('.btns li').eq(i).addClass('active').siblings().removeClass('active')		
+			}
+
+		//鼠标滑入
+			$('.btns li').hover(function(){
+				var index = $(this).index();
+				i=index;
+				$('.imgbox').stop().animate({left:-index*600 + 'px'})
+				$(this).addClass('active').siblings().removeClass('active')				
+			},function(){
+				clearInterval(time)
+			})
+
+		//定时器
+			time = setInterval(moveL,1500)
+
+			//鼠标滑入图片
+			$('.imgbox').hover(function(){
+				clearInterval(time)
+			},function(){
+				time = setInterval(moveL,1500)
+			})
+
+		})
+	</script>
+</head>
+<body>
+	<div class="banner">
+		<ul class='imgbox'>
+			<li><img src="images/2.jpg" alt=""></li>
+			<li><img src="images/1.jpg" alt=""></li>
+			<li><img src="images/3.jpg" alt=""></li>
+			<li><img src="images/4.jpg" alt=""></li>			
+		</ul>
+		<div class="Larrow">&lt;</div>
+		<div class="Rarrow">&gt;</div>
+		<ul class="btns">
+			<!-- <li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li> -->
+		</ul>
+	</div>
+</body>
+</html>
