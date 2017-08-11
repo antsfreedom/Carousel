@@ -91,7 +91,7 @@
 				if(i==length){
 					i=0
 				}
-				$('.imgbox').stop().animate({left:-i*600+'px'})
+				$('.imgbox').stop().animate({left:-i*600+'px'},500)
 				$('.num li').eq(i).addClass('on').siblings().removeClass('on')
 			}
 
@@ -107,7 +107,7 @@
 
 
 			//鼠标滑入
-			$('.num li').hover(function(){
+			$('.num li').mouseover(function(){
 					var index=$(this).index();
 					i=index;
 					$('.imgbox').stop().animate({left:-index*600+'px'},500)

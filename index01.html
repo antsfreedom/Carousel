@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title></title>
+	<link rel="stylesheet" href="">
+	<script src= "jquery-1.11.3.js"></script>
+	<style type="text/css" media="screen">
+		*{
+			margin:0;
+			padding:0;
+		}
+		ul li{
+			list-style: none;
+		}
+		.box{
+			margin:100px auto;
+			position: relative;
+			width:600px;
+			height:260px;
+			overflow: hidden;
+			border:1px solid #000;
+		}
+		.imgbox{
+			position: absolute;
+			left: 0;
+			top:0;
+			width:3000px;
+		}
+		.imgbox li{
+			float:left;
+			width:600px;
+			height:260px;
+		}
+		.btnL,.btnR{
+			position: absolute;
+			width:30px;
+			height:60px;
+			color:#fff;
+			line-height: 60px;
+			text-align: center;
+			font-size: 30px;
+			background: rgba(0,0,0,.3);
+		}
+		.btnL{
+			left:0;
+			top:50%;
+			margin-top: -30px;
+		}
+		.btnR{
+			right:0;
+			top:50%;
+			margin-top: -30px;
+		}
+		.num{
+			position: absolute;
+			bottom:10px;
+			left:50%;
+		}
+		.num li{
+			float:left;
+			width:20px;
+			height: 20px;
+			margin:3px;
+			border-radius: 50%;
+			background: #888;
+		}
+		.num li.on{
+			background:orange;
+		}
+	</style>
+	<script>
+		$(function(){
+			var i=0;
+			var length = $(".imgbox li").length;
+			
+			for(var j=0;j<length;j++){
+				$(".num").append("<li></li>")				
+			}
+
+			$(".num li").first().addClass("on");
+			$(".btnL").click(function(){
+				moveL();
+			})
+
+			function moveL(){				
+				i++;
+				if(i==length){
+					i=0;
+				}
+				$(".imgbox").stop().animate({left:-i*600+"px"},500);
+				$(".num li").eq(i).addClass("on").siblings().removeClass("on")
+			}
+
+
+
+			$('.btnR').click(function(){
+				i--
+				if(i==-1){
+					i=length-1
+				}
+				$('.imgbox').stop().animate({left:-i*600+'px'},500)
+				$('.num li').eq(i).addClass('on').siblings().removeClass('on')
+			})
+
+			$(".num li").mouseover(function(){
+				var index = $(this).index();
+				$(this).addClass("on").siblings().removeClass("on");
+				$(".imgbox").stop().animate({left:-index*600+'px'},500);
+				clearInterval(time);
+			})
+
+			var time = setInterval(moveL,1000)
+
+			$(".imgbox").hover(function(){
+				clearInterval(time)
+			},function(){
+				time = setInterval(moveL,1000)
+			})
+
+		})
+	</script>
+</head>
+<body>
+	<div class="box">
+		<ul class="imgbox">
+			<li><img src="images/1.jpg" alt=""></li>
+			<li><img src="images/2.jpg" alt=""></li>
+			<li><img src="images/3.jpg" alt=""></li>
+			<li><img src="images/4.jpg" alt=""></li>
+			<li><img src="images/4.jpg" alt=""></li>
+		</ul>
+
+		<div class="btnL">&lt;</div>
+		<div class="btnR">&gt;</div>
+
+		<ul class=num>
+		<!-- 	<li></li>
+			<li></li>
+			<li></li>
+			<li></li> -->
+		</ul>
+	</div>
+</body>
+</html>
