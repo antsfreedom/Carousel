@@ -19,19 +19,12 @@
 			position: relative;
 			width:600px;
 			height:260px;
-			overflow: hidden;
 			border:1px solid #000;
 		}
-		.imgbox{
+		.imgbox li{
 			position: absolute;
 			left: 0;
 			top:0;
-			width:3000px;
-		}
-		.imgbox li{
-			float:left;
-			width:600px;
-			height:260px;
 		}
 		.btnL,.btnR{
 			position: absolute;
@@ -62,6 +55,8 @@
 			float:left;
 			width:20px;
 			height: 20px;
+			line-height: 20px;
+			text-align: center;
 			margin:3px;
 			border-radius: 50%;
 			background: #888;
@@ -74,50 +69,49 @@
 		$(function(){
 			var i=0;
 			var length = $(".imgbox li").length;
-			
-			for(var j=0;j<length;j++){
-				$(".num").append("<li></li>")				
-			}
-
-			$(".num li").first().addClass("on");
-			$(".btnL").click(function(){
-				moveL();
+			// alert(length)
+			$(".num li").first().addClass("on")
+			$(".num li").mouseover(function(){
+				var index = $(this).index();
+				$(this).addClass("on").siblings().removeClass("on");
+				$(".imgbox li").eq(index).stop().fadeIn().siblings().stop().fadeOut()
+			});
+			$(".box").hover(function(){
+				clearInterval(time)
+			},function(){
+				time = setInterval(move,1000)
 			})
 
-			function moveL(){				
+			var time = setInterval(move,1000)
+			//向右
+			function move(){
 				i++;
 				if(i==length){
 					i=0;
 				}
-				$(".imgbox").stop().animate({left:-i*600+"px"},500);
-				$(".num li").eq(i).addClass("on").siblings().removeClass("on")
+				$(".num li").eq(i).addClass("on").siblings().removeClass("on");
+				$(".imgbox li").eq(i).stop().fadeIn().siblings().stop().fadeOut();				
+			}
+
+			function moveL(){
+				i--;
+				if(i==-1){
+					i=length-1;
+				}
+				$(".num li").eq(i).addClass("on").siblings().removeClass("on");
+				$(".imgbox li").eq(i).stop().fadeIn().siblings().stop().fadeOut();				
 			}
 
 
 
-			$('.btnR').click(function(){
-				i--
-				if(i==-1){
-					i=length-1
-				}
-				$('.imgbox').stop().animate({left:-i*600+'px'},500)
-				$('.num li').eq(i).addClass('on').siblings().removeClass('on')
+			$(".btnL").click(function(){
+				moveL()
 			})
 
-			$(".num li").mouseover(function(){
-				var index = $(this).index();
-				$(this).addClass("on").siblings().removeClass("on");
-				$(".imgbox").stop().animate({left:-index*600+'px'},500);
-				clearInterval(time);
+			$(".btnR").click(function(){
+				move()
 			})
 
-			var time = setInterval(moveL,1000)
-
-			$(".imgbox").hover(function(){
-				clearInterval(time)
-			},function(){
-				time = setInterval(moveL,1000)
-			})
 
 		})
 	</script>
@@ -129,17 +123,18 @@
 			<li><img src="images/2.jpg" alt=""></li>
 			<li><img src="images/3.jpg" alt=""></li>
 			<li><img src="images/4.jpg" alt=""></li>
-			<li><img src="images/4.jpg" alt=""></li>
+			<li><img src="images/3.jpg" alt=""></li>
 		</ul>
 
 		<div class="btnL">&lt;</div>
 		<div class="btnR">&gt;</div>
 
 		<ul class=num>
-		<!-- 	<li></li>
-			<li></li>
-			<li></li>
-			<li></li> -->
+			<li>1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
 		</ul>
 	</div>
 </body>
